@@ -6,13 +6,14 @@ from scrape import get_rooms
 from tg_bot import send_telegram_message
 
 # load config
-COUNTRY, CITY = None, None
+COUNTRY, CITY, CHECK_INTERVAL = None, None, 10
 
 try:
     with open("config.yaml", "r") as file:
         config = yaml.safe_load(file)
         COUNTRY = config["XIOR_COUNTRY"]
         CITY = config["XIOR_CITY"]
+        CHECK_INTERVAL = config["CHECK_INTERVAL"]
 except FileNotFoundError:
     # copy config_example.yaml to config.yaml
     from shutil import copyfile
@@ -37,8 +38,10 @@ def check_rooms():
 
 if __name__ == "__main__":
     
+    print(f"Checking xior.be offers every {CHECK_INTERVAL} minutes")
+    
     # check every 10 minutes
-    schedule.every(10).minutes.do(check_rooms)
+    schedule.every(CHECK_INTERVAL).minutes.do(check_rooms)
 
     while True:
     
