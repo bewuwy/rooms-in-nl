@@ -18,13 +18,13 @@ def get_csrf():
     
     return token['content'], cookies
 
-def get_rooms(country, city, csrf_token, cookies):
-    if not csrf_token:
+def get_rooms(country, city="", csrf_token=None, cookies=None):
+    if not csrf_token or not cookies:
         csrf_token, cookies = get_csrf()
     
     url = "https://www.xior-booking.com/ajax/space-search"
 
-    payload = f"country={country}&city={city if city else ""}&=location%3D&=space_type%3D&=order%3D&=unlock_key%3D&min_price=0&max_price=6180&min_surface=10&max_surface=116&page=1&pagination=true"
+    payload = f"country={country}&city={city}&=location%3D&=space_type%3D&=order%3D&=unlock_key%3D&min_price=0&max_price=6180&min_surface=10&max_surface=116&page=1&pagination=true"
     
     headers = {
         # "cookie": f"laravel_session=eyJpdiI6ImoxRW15c1pqUTA5ZTZpcnY5dkhmcFE9PSIsInZhbHVlIjoiek1JY2FpSWpYMzdxUFkzK0pyUEtFbzd3RFJneDQ4ZW1rRjZVdkcwODBVNnArYy9WTjJ2d3NQMWN4MjRoR0l3clkrYVowa2pwR2dRQ1QvZ2ZyTUhZR05SbVVCVjFIR0tKY0NyUTB4bngyVHZjUWQydWI1TTl1RTFRMHRTQ2RqZ2YiLCJtYWMiOiJlZTU3Mjk2Nzg3YjU4ZjU0ODgwNDRjMDg3NmNkMjI4M2RlOWMzNWM5MjExNWJkMTFiZjM2YzUyNmM2Nzc2MWQ4In0%253D; XSRF-TOKEN=${csrf_token}",

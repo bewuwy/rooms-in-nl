@@ -1,6 +1,4 @@
 import yaml
-import schedule
-import time
 
 from scrape import get_rooms
 from tg_bot import send_telegram_message
