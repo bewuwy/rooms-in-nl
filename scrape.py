@@ -50,7 +50,7 @@ def get_rooms(country, city="", csrf_token=None, cookies=None):
     
     if r.status_code != 200:
         print(f"Failed to get rooms: {r.text}")
-        send_telegram_message(f"Failed to get rooms: {r.text}")
+        send_telegram_message(f"Failed to get xior.be rooms: {r.text}")
         quit()
     
     rooms = r.json() # brotli.decompress(r.content)
