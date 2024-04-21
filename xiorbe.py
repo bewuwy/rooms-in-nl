@@ -1,8 +1,6 @@
 import yaml
-import schedule
-import time
 
-from scrape import get_rooms
+from xiorbe_scrape import get_rooms
 from tg_bot import send_telegram_message
 
 # load config
