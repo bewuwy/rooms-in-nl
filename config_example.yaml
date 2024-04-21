@@ -1,5 +1,10 @@
+#### General config
+#### Copy this file to config.yaml and fill in the values
+
+## Telegram bot config
 TG_TOKEN: TELEGRAM_BOT_TOKEN
-TG_CHAT: 1947518514
+TG_CHAT: TELEGRAM_CHAT_ID
+
+## xior.be config
 XIOR_COUNTRY: 528  # Netherlands
 XIOR_CITY: 21  # Delft
-CHECK_INTERVAL: 10  # minutes

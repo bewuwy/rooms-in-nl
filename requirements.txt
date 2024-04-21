@@ -2,4 +2,3 @@ brotli
 requests
 beautifulsoup4
 pyyaml
-schedule
