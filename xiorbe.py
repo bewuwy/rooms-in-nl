@@ -4,14 +4,13 @@ from xiorbe_scrape import get_rooms
 from tg_bot import send_telegram_message
 
 # load config
-COUNTRY, CITY, CHECK_INTERVAL = None, None, 10
+COUNTRY, CITY = None, None
 
 try:
     with open("config.yaml", "r") as file:
         config = yaml.safe_load(file)
         COUNTRY = config["XIOR_COUNTRY"]
         CITY = config["XIOR_CITY"]
-        CHECK_INTERVAL = config["CHECK_INTERVAL"]
 except FileNotFoundError:
     # copy config_example.yaml to config.yaml
     from shutil import copyfile
@@ -33,6 +32,8 @@ def check_rooms():
         
         # send message
         send_telegram_message(f"{num_rooms} XIOR rooms are now available! Quick go to https://www.xior-booking.com/# to book!")
+    else:
+        print("No rooms available")
 
 if __name__ == "__main__":
     
