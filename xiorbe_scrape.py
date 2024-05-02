@@ -57,8 +57,26 @@ def get_rooms(country, city="", csrf_token=None, cookies=None):
     
     return rooms
 
+def get_basic_info(room_dict):
+    return {
+        "address": f'{room_dict["address"]} {room_dict["house_number"]}, {room_dict["city"]}',
+        "price": room_dict["price"],
+        "surface_area": room_dict["surface_area"],
+        "unlock_key": room_dict["unlock_key"],
+        "url": f"https://www.xior-booking.com/space/{room_dict['id']}",
+    }
+    
+def get_basic_description(room_dict):
+    
+    info = get_basic_info(room_dict)
+    
+    return f"{info['surface_area']} m2 in {info['address']} for {info['price']}EUR - {info['url']}" + (f" (Unlock key: {info['unlock_key']})" if info['unlock_key'] else "")
+
 if __name__ == "__main__":
     token, cookies = get_csrf()
         
-    rooms = get_rooms(528, 21, token, cookies)
-    print(rooms)
+    rooms = get_rooms(528, 22, token, cookies)
+    # print(rooms)
+    
+    for i in rooms["spaces"]:
+        print(get_basic_description(i))

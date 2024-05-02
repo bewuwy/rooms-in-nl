@@ -1,6 +1,6 @@
 import yaml
 
-from xiorbe_scrape import get_rooms
+from xiorbe_scrape import get_rooms, get_basic_description
 from tg_bot import send_telegram_message
 
 # load config
@@ -30,8 +30,15 @@ def check_rooms():
     if num_rooms > 0:
         print(f"Rooms available: {num_rooms}")
         
+        is_are = "is" if num_rooms == 1 else "are"
+        
         # send message
-        send_telegram_message(f"{num_rooms} XIOR rooms are now available! Quick go to https://www.xior-booking.com/# to book!")
+        msg = f"{num_rooms} XIOR rooms {is_are} now available! Quick go to https://www.xior-booking.com/# to book!\n\n"
+        
+        for r in rooms["spaces"]:
+            msg += "- " + get_basic_description(r) + "\n"
+        
+        send_telegram_message(msg)
     else:
         print("No rooms available")
 
