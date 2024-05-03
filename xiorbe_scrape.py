@@ -63,7 +63,7 @@ def get_basic_info(room_dict):
         "price": room_dict["price"],
         "surface_area": room_dict["surface_area"],
         "unlock_key": room_dict["unlock_key"],
-        "url": f"https://www.xior-booking.com/space/{room_dict['id']}",
+        "url": f"https://xior-booking.com/space/{room_dict['id']}",
     }
     
 def get_basic_description(room_dict):

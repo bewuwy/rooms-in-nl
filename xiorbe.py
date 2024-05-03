@@ -30,10 +30,10 @@ def check_rooms():
     if num_rooms > 0:
         print(f"Rooms available: {num_rooms}")
         
-        is_are = "is" if num_rooms == 1 else "are"
+        is_are = " is" if num_rooms == 1 else "s are"
         
         # send message
-        msg = f"{num_rooms} XIOR rooms {is_are} now available! Quick go to https://www.xior-booking.com/# to book!\n\n"
+        msg = f"{num_rooms} XIOR room{is_are} now available!\n\n"
         
         for r in rooms["spaces"]:
             msg += "- " + get_basic_description(r) + "\n"

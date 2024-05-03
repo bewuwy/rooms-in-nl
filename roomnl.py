@@ -42,9 +42,9 @@ def get_number_of_rooms(priority_rooms: bool):
 if __name__ == "__main__":
     
     num_rooms = get_number_of_rooms(SEARCH_PRIORITY)
-    print(num_rooms, f"rooms with{'out' if not SEARCH_PRIORITY else ''} priority found")
-    
+    print(num_rooms, f"room{'s' if num_rooms > 1 else ''}{' with priority' if SEARCH_PRIORITY else ''} found")
+        
     if num_rooms > 0:        
-        send_telegram_message(f"{num_rooms} ROOM.nl rooms{' with PRIORITY' if SEARCH_PRIORITY else ''} are now available! Quick go to https://www.room.nl/ to book!")
+        send_telegram_message(f"{num_rooms} ROOM.nl room{'s' if num_rooms > 1 else ''}{' with PRIORITY' if SEARCH_PRIORITY else ''} {'are' if num_rooms > 1 else 'is'} now available!\n\nSee them at https://room.nl/en/offerings/to-rent#?gesorteerd-op=zoekprofiel&voorrang=1")
     elif num_rooms == 0:
         send_telegram_message(f"No ROOM.nl rooms{' with PRIORITY' if SEARCH_PRIORITY else ''} are available. Try again later.")
