@@ -68,7 +68,7 @@ if __name__ == "__main__":
         for closing_date in closing_dates_i:
             count = closing_dates[closing_date]
             in_days = (closing_date - datetime.now().date()).days
-            in_days = f"(in {in_days} days)" if in_days > 0 else "(today!)"
+            in_days = f"(in {in_days} day{'s' if in_days > 1 else ''})" if in_days > 0 else "(today!)"
             
             msg += f"- {count} room{'s' if count > 1 else ''} closing on {closing_date.strftime('%d.%m')} {in_days}\n"
         
