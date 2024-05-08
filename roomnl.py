@@ -50,32 +50,60 @@ def get_rooms(priority_rooms: bool):
 if __name__ == "__main__":
     
     rooms, num_rooms = get_rooms(SEARCH_PRIORITY)
+
+    # load old available rooms from text file
+    r_ids_old = []
+    try:
+        with open("roomnl_rooms.txt", "r", encoding='utf-8') as f:
+            r_ids_old = f.read().splitlines()
+    except FileNotFoundError:
+        pass
     
-    if num_rooms > 0:        
-        msg = f"{num_rooms} ROOM.nl room{'s' if num_rooms > 1 else ''}{' with PRIORITY' if SEARCH_PRIORITY else ''} " + \
-            f"{'are' if num_rooms > 1 else 'is'} now available!\n\n"
+    # save available rooms to text file
+    r_ids = []
+    for r in rooms:
+        r_id = f"{r['street']} {r['houseNumber']}" # - {r['id']}
+        r_ids.append(r_id)
+    r_ids = sorted(r_ids)
+    with open("roomnl_rooms.txt", "w", encoding='utf-8') as f:
+        f.write("\n".join(r_ids))
+
+    if num_rooms == 0:
+        send_telegram_message(f"No ROOM.nl rooms{' with PRIORITY' if SEARCH_PRIORITY else ''} are available. Try again later.")
+        quit()
+    
+    msg = f"{num_rooms} ROOM.nl room{'s' if num_rooms > 1 else ''}{' with PRIORITY' if SEARCH_PRIORITY else ''} " + \
+        f"{'are' if num_rooms > 1 else 'is'} now available!\n\n"
+    
+    closing_dates = {}
+    for room in rooms:
+        closing_date = room["closingDate"]
+        closing_date = datetime.strptime(closing_date, "%Y-%m-%dT%H:%M:%S.%fZ").date()
         
-        closing_dates = {}
-        for room in rooms:
-            closing_date = room["closingDate"]
-            closing_date = datetime.strptime(closing_date, "%Y-%m-%dT%H:%M:%S.%fZ").date()
-            
-            closing_dates[closing_date] = closing_dates.get(closing_date, 0) + 1
+        closing_dates[closing_date] = closing_dates.get(closing_date, 0) + 1
+    
+    # sort closing dates
+    closing_dates_i = sorted(closing_dates.keys())
+    
+    for closing_date in closing_dates_i:
+        count = closing_dates[closing_date]
+        in_days = (closing_date - datetime.now().date()).days
+        in_days = f"(in {in_days} day{'s' if in_days > 1 else ''})" if in_days > 0 else "(today!)"
         
-        # sort closing dates
-        closing_dates_i = sorted(closing_dates.keys())
+        msg += f"- {count} room{'s' if count > 1 else ''} closing on {closing_date.strftime('%d.%m')} {in_days}\n"
         
-        for closing_date in closing_dates_i:
-            count = closing_dates[closing_date]
-            in_days = (closing_date - datetime.now().date()).days
-            in_days = f"(in {in_days} day{'s' if in_days > 1 else ''})" if in_days > 0 else "(today!)"
-            
-            msg += f"- {count} room{'s' if count > 1 else ''} closing on {closing_date.strftime('%d.%m')} {in_days}\n"
-        
-        msg += "\nSee them at https://room.nl/en/offerings/to-rent#?gesorteerd-op=zoekprofiel&voorrang=1"
-        
-    elif num_rooms == 0:
-        msg = f"No ROOM.nl rooms{' with PRIORITY' if SEARCH_PRIORITY else ''} are available. Try again later."
+    # find rooms which are new
+    new_rooms = set(r_ids) - set(r_ids_old)
+    
+    if new_rooms:
+        msg += "\nNew rooms:"
+        for new_room in new_rooms:
+            msg += f"\n- {new_room}"
+    else:
+        msg += "\nNo new rooms :("
+    
+    # send message
+    msg += "\n\nhttps://room.nl/en/offerings/to-rent#?gesorteerd-op=zoekprofiel&voorrang=1"
 
     send_telegram_message(msg)
     print(msg)
