@@ -67,17 +67,10 @@ if __name__ == "__main__":
         
         for closing_date in closing_dates_i:
             count = closing_dates[closing_date]
-            in_time = (closing_date - datetime.now().date()).days
+            in_days = (closing_date - datetime.now().date()).days
+            in_days = f"(in {in_days} days)" if in_days > 0 else "(today!)"
             
-            if in_time <= 1:
-                # in hours
-                in_time = (closing_date - datetime.now().date()).seconds // 3600
-                in_time = f"(in {in_time} hours!!)" if in_time > 0 else "(in less than an hour!!)"
-            else:
-                # in days    
-                in_time = f"(in {in_time} days)"
-            
-            msg += f"- {count} room{'s' if count > 1 else ''} closing on {closing_date.strftime('%d.%m')} {in_time}\n"
+            msg += f"- {count} room{'s' if count > 1 else ''} closing on {closing_date.strftime('%d.%m')} {in_days}\n"
         
         msg += "\nSee them at https://room.nl/en/offerings/to-rent#?gesorteerd-op=zoekprofiel&voorrang=1"
         
