@@ -101,9 +101,15 @@ if __name__ == "__main__":
             msg += f"\n- {new_room}"
     else:
         msg += "\nNo new rooms :("
+        
+    # find rooms which are no longer available
+    removed_rooms = set(r_ids_old) - set(r_ids)
+    
+    if removed_rooms:
+        msg += "\n\nRooms no longer available:"
+        for removed_room in removed_rooms:
+            msg += f"\n- {removed_room}"
     
     # send message
-    msg += "\n\nhttps://room.nl/en/offerings/to-rent#?gesorteerd-op=zoekprofiel&voorrang=1"
-
     send_telegram_message(msg)
     print(msg)
