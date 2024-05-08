@@ -10,7 +10,10 @@ def get_rooms(priority_rooms: bool):
     querystring = {"limit":"30","locale":"en_GB","page":"0"}
 
     payload = ROOMNL_CONFIG
-    payload["filters"] = {"$and": [{"reactionData.toonAlsVoorrangsgroep": {"$eq": "1" if priority_rooms else "0"}}]}
+    if priority_rooms:
+        payload["filters"] = {"$and": [{"reactionData.toonAlsVoorrangsgroep": {"$eq": "1"}}]}
+    else:
+        payload["filters"] = {"$and": []}
     
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/115.0",
