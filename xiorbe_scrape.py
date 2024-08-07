@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-import brotli
+import brotli  # needed for decompressing brotli compressed responses
 
 from tg_bot import send_telegram_message
 
@@ -10,8 +10,14 @@ DEFAULT_HEADERS = {
 
 def get_csrf():
     r = requests.get("https://www.xior-booking.com/#", headers=DEFAULT_HEADERS)
+    
+    if r.status_code != 200:
+        print(f"Failed to get csrf token ({r.status_code})")
+        send_telegram_message(f"Failed to get xior.be csrf token ({r.status_code})")
+        quit()
+    
     soup = BeautifulSoup(r.text, 'html.parser')
-        
+
     # get value of meta with name=csrf-token
     token = soup.find('meta', {'name': 'csrf-token'})
     cookies = r.cookies
@@ -49,8 +55,8 @@ def get_rooms(country, city="", csrf_token=None, cookies=None):
     r = requests.post(url, headers=headers, data=payload, cookies=cookies)
     
     if r.status_code != 200:
-        print(f"Failed to get rooms: {r.text}")
-        send_telegram_message(f"Failed to get xior.be rooms: {r.text}")
+        print(f"Failed to get rooms ({r.status_code})")
+        send_telegram_message(f"Failed to get xior.be rooms ({r.status_code})")
         quit()
     
     rooms = r.json() # brotli.decompress(r.content)

@@ -1,9 +1,11 @@
 import requests
 import yaml
 
+CONFIG_PATH = "config/config.yaml"
+
 def load_config():
     try:
-        with open("config.yaml", "r") as file:
+        with open(CONFIG_PATH, "r") as file:
             config = yaml.safe_load(file)
             return config
     except FileNotFoundError:

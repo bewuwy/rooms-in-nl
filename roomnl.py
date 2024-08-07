@@ -1,7 +1,7 @@
 import requests
 # import json
 
-from roomnl_config import ROOMNL_CONFIG, SEARCH_PRIORITY
+from config.roomnl_config import ROOMNL_CONFIG, SEARCH_PRIORITY
 from tg_bot import send_telegram_message
 from datetime import datetime
 

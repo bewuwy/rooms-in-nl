@@ -4,17 +4,18 @@ from xiorbe_scrape import get_rooms, get_basic_description
 from tg_bot import send_telegram_message
 
 # load config
+CONFIG_DIR = "config/"
 COUNTRY, CITY = None, None
 
 try:
-    with open("config.yaml", "r") as file:
+    with open(CONFIG_DIR+"config.yaml", "r") as file:
         config = yaml.safe_load(file)
         COUNTRY = config["XIOR_COUNTRY"]
         CITY = config["XIOR_CITY"]
 except FileNotFoundError:
     # copy config_example.yaml to config.yaml
     from shutil import copyfile
-    copyfile("config_example.yaml", "config.yaml")
+    copyfile(CONFIG_DIR+"config_example.yaml", CONFIG_DIR+"config.yaml")
     
     print("Please edit config.yaml and re-run the program")
     quit()
