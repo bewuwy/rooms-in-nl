@@ -1,12 +1,20 @@
 import requests
 import yaml
 
-def send_telegram_message(message, bot_token=None, chat_id=None):
-    if not bot_token or not chat_id:
+def load_config():
+    try:
         with open("config.yaml", "r") as file:
             config = yaml.safe_load(file)
-            bot_token = config["TG_TOKEN"]
-            chat_id = config["TG_CHAT"]
+            return config
+    except FileNotFoundError:
+        print("Config file not found")
+        raise FileNotFoundError("Config file not found")
+
+def send_telegram_message(message, bot_token=None, chat_id=None):
+    if not bot_token or not chat_id:
+        config = load_config()
+        bot_token = config["TG_TOKEN"]
+        chat_id = config["TG_CHAT"]
     
     url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
     params = {"chat_id": chat_id, "text": message}

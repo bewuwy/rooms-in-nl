@@ -10,6 +10,7 @@ def get_rooms(priority_rooms: bool):
     querystring = {"limit":"30","locale":"en_GB","page":"0"}
 
     payload = ROOMNL_CONFIG
+    # !FIX dont overwrite the original filters
     if priority_rooms:
         payload["filters"] = {"$and": [{"reactionData.toonAlsVoorrangsgroep": {"$eq": "1"}}]}
     else:
